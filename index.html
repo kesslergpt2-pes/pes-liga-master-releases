@@ -166,10 +166,8 @@ function aggregate(ms){
 }
 function goalMilestones(ms){const a=aggregate(ms);return '<div class="grid three">'+metric('Dobletes',a.doubles,'Partidos con 2 goles')+metric('Hattricks',a.hattricks,'Partidos con 3 goles')+metric('Póker',a.pokers,'Partidos con 4 goles')+metric('Re-póker',a.repokers,'Partidos con 5 goles')+'</div>'}
 function isMatchFigure(m){
- const value=m?.isStar??m?.figure;
- if(value===true||value===1)return true;
- if(typeof value==='string')return ['yes','true','1','si','sí'].includes(value.trim().toLocaleLowerCase('es'));
- return false;
+ const values=[m?.isStar,m?.figure];
+ return values.some(value=>value===true||value===1||(typeof value==='string'&&['yes','true','1','si','sí'].includes(value.trim().toLocaleLowerCase('es'))));
 }
 function matchDetailsHTML(m){
  const season=seasonById(m.seasonId)||{number:'?'},outcome=m.shootout==='W'?'Victoria por penales':m.shootout==='L'?'Derrota por penales':m.result==='W'?'Victoria':m.result==='D'?'Empate':m.result==='L'?'Derrota':'Sin resultado';
