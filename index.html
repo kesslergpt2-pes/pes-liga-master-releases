@@ -417,10 +417,19 @@ details.global-disclosure[open]>.global-popover-panel{position:fixed!important;z
 .global-popover-panel>.record-body{padding:0!important}
 .global-popover-panel>.match-detail-panel{position:static!important;inset:auto!important;transform:none!important;width:auto!important;max-width:none!important;max-height:none!important;overflow:visible!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
 .global-popover-panel>.competition-performance-body{padding:0!important}
-.global-popover-panel .global-disclosure[open]>.global-popover-panel{z-index:1210!important;width:min(720px,calc(100vw - 56px))!important;max-height:68vh!important}
+/* Segundo nivel: integrado en el flujo de la ventana principal, nunca flotante */
+.global-popover-panel details.global-disclosure{display:block;margin:10px 0 0 14px!important;padding-left:12px;border-left:2px solid #3e876f}
+.global-popover-panel details.global-disclosure>summary{display:flex;align-items:center;gap:10px;min-height:38px;padding:9px 12px!important;border:1px solid #304b65;border-radius:10px;background:#172b40;color:#e8f2fc;font-weight:650}
+.global-popover-panel details.global-disclosure>summary:hover{border-color:#58c99f;background:#1b354b}
+.global-popover-panel details.global-disclosure[open]>.global-popover-panel{position:relative!important;z-index:auto!important;inset:auto!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;transform:none!important;width:auto!important;max-width:none!important;max-height:440px!important;overflow:auto!important;overscroll-behavior:contain;margin:8px 0 4px!important;padding:12px!important;border:1px solid #2c455e!important;border-radius:11px!important;background:#0e1d2e!important;box-shadow:inset 0 1px 0 #ffffff08!important;color:var(--text);box-sizing:border-box}
+.global-popover-panel details.global-disclosure .global-popover-close{display:none!important}
+.global-popover-panel details.global-disclosure details.global-disclosure{margin-left:8px!important}
+
 .global-popover-panel .match-detail{margin:8px 0}
 .global-popover-panel .match-detail-toggle{min-height:38px;padding:8px 11px}
 @media(max-width:620px){
+ .global-popover-panel details.global-disclosure{margin-left:5px!important;padding-left:8px}
+ .global-popover-panel details.global-disclosure[open]>.global-popover-panel{max-height:360px!important;padding:10px!important}
  details.global-disclosure[open]>.global-popover-panel{top:50%!important;width:calc(100vw - 22px)!important;max-width:calc(100vw - 22px)!important;max-height:84vh!important;padding:13px!important;border-radius:13px!important}
  .global-popover-panel .match-detail-grid,.global-popover-panel .match-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .global-popover-panel>.global-popover-close{min-width:32px;height:32px}
