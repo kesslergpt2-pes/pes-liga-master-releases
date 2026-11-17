@@ -779,10 +779,10 @@ function installGlobalDisclosureSystem(){
   if(summary){
    const d=summary.parentElement;
    if(!isDisclosure(d))return;
-   if(d.open){
-    prepare(d);
-    document.querySelectorAll('details.global-disclosure[open]').forEach(other=>{if(other!==d&&!other.contains(d))closeDetails(other)});
-   }else d.querySelectorAll('details.global-disclosure[open]').forEach(child=>child.open=false);
+   e.preventDefault();
+   if(d.open){closeDetails(d);return}
+   document.querySelectorAll('details.global-disclosure[open]').forEach(other=>{if(other!==d&&!other.contains(d))closeDetails(other)});
+   d.open=true;prepare(d);
    return;
   }
   const open=[...document.querySelectorAll('details.global-disclosure[open]')];
