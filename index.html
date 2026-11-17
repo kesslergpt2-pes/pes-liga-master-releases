@@ -758,6 +758,12 @@ function installGlobalDisclosureSystem(){
  document.documentElement.dataset.globalDisclosureReady='1';
  const isDisclosure=d=>d instanceof HTMLDetailsElement;
  function closeDetails(d){if(!isDisclosure(d))return;d.open=false;d.querySelectorAll('details.global-disclosure[open]').forEach(n=>n.open=false)}
+ function decorate(root=document){
+  const list=[];
+  if(isDisclosure(root))list.push(root);
+  if(root.querySelectorAll)list.push(...root.querySelectorAll('details'));
+  list.forEach(d=>{d.classList.add('global-disclosure');if(d.open)prepare(d)});
+ }
  function prepare(d){
   if(!isDisclosure(d))return;
   d.classList.add('global-disclosure');
@@ -789,6 +795,9 @@ function installGlobalDisclosureSystem(){
   if(open.length&&!e.target.closest('.global-popover-panel'))open.filter(d=>!open.some(parent=>parent!==d&&parent.contains(d))).forEach(closeDetails);
  });
  document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...document.querySelectorAll('details.global-disclosure[open]')];const deepest=open.filter(d=>!open.some(other=>other!==d&&other.contains(d)));deepest.forEach(closeDetails)});
+ decorate();
+ const observer=new MutationObserver(records=>records.forEach(record=>record.addedNodes.forEach(node=>{if(node.nodeType===1)decorate(node)})));
+ observer.observe(document.body,{childList:true,subtree:true});
 }
 
 function init(){installGlobalDisclosureSystem();document.getElementById('player-position').innerHTML='<option value="">Seleccionar posición</option>'+POSITIONS.map(p=>`<option>${esc(p)}</option>`).join('');renderAll();}
