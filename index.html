@@ -406,6 +406,26 @@ details[open]>.match-detail-toggle::after{content:'−'}
 .season-club-cue{display:inline-flex;align-items:center;gap:5px}.season-club-cue .entity-image{width:20px;height:20px}
 @media(max-width:900px){#matches-table table{min-width:850px}#matches-table .table-wrap{overflow-x:auto}}
 @media(max-width:620px){#matches-table .match-detail[open] .match-detail-panel{position:fixed;top:12vh;left:5vw;right:5vw;width:90vw;max-height:76vh}#matches-table .match-detail-panel .match-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Sistema global de detalles flotantes: mismo patrón en todas las pestañas */
+details.global-disclosure{position:relative;min-width:0}
+details.global-disclosure>summary{cursor:pointer;list-style:none}
+details.global-disclosure>summary::-webkit-details-marker{display:none}
+details.global-disclosure[open]>.global-popover-panel{position:fixed!important;z-index:1200!important;top:50%!important;left:50%!important;right:auto!important;bottom:auto!important;transform:translate(-50%,-50%)!important;width:min(820px,calc(100vw - 36px))!important;max-width:calc(100vw - 36px)!important;max-height:min(78vh,760px)!important;overflow:auto!important;overscroll-behavior:contain;padding:18px!important;margin:0!important;border:1px solid #3b5875!important;border-radius:16px!important;background:linear-gradient(155deg,#14263b,#0d1929 78%)!important;box-shadow:0 24px 90px #000c,0 0 0 100vmax #03091499!important;color:var(--text);box-sizing:border-box}
+.global-popover-panel>.global-popover-close{position:sticky;top:0;float:right;z-index:2;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;margin:-7px -7px 8px 12px;border:1px solid #405b76;border-radius:10px;background:#1b3048;color:#eaf3ff;font-size:19px;font-weight:800;cursor:pointer}
+.global-popover-panel>.global-popover-close:hover{border-color:#65d6aa;background:#21415a}
+.global-popover-panel>.record-body{padding:0!important}
+.global-popover-panel>.match-detail-panel{position:static!important;inset:auto!important;transform:none!important;width:auto!important;max-width:none!important;max-height:none!important;overflow:visible!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.global-popover-panel>.competition-performance-body{padding:0!important}
+.global-popover-panel .global-disclosure[open]>.global-popover-panel{z-index:1210!important;width:min(720px,calc(100vw - 56px))!important;max-height:68vh!important}
+.global-popover-panel .match-detail{margin:8px 0}
+.global-popover-panel .match-detail-toggle{min-height:38px;padding:8px 11px}
+@media(max-width:620px){
+ details.global-disclosure[open]>.global-popover-panel{top:50%!important;width:calc(100vw - 22px)!important;max-width:calc(100vw - 22px)!important;max-height:84vh!important;padding:13px!important;border-radius:13px!important}
+ .global-popover-panel .match-detail-grid,.global-popover-panel .match-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .global-popover-panel>.global-popover-close{min-width:32px;height:32px}
+}
+
 </style></head>
 <body><div class="app">
 <aside class="side"><div class="brand"><div class="crest">P</div><div><b>PES LIGA MASTER</b><small>Modo Ser Leyenda · Archivo personal</small></div></div><div><div class="nav-label">Principal</div><nav class="nav" id="nav">
@@ -731,7 +751,47 @@ function normalizeImportedData(x){
 }
 function importData(){const input=document.getElementById('import-file'),file=input.files?.[0];if(!file){alert('Seleccioná un archivo JSON.');return}const reader=new FileReader();reader.onload=()=>{const previous=db;try{const x=normalizeImportedData(JSON.parse(String(reader.result||'')));if(!confirm('La importación reemplazará el jugador, las temporadas y los partidos actuales. La biblioteca de imágenes se conservará y se combinará con la del archivo. ¿Querés continuar?'))return;const oldImages=previous.catalogs?.images||{},newImages=x.catalogs?.images||{},mergedImages={};for(const kind of new Set([...Object.keys(oldImages),...Object.keys(newImages)]))mergedImages[kind]={...(oldImages[kind]||{}),...(newImages[kind]||{})};x.catalogs={...(x.catalogs||{}),images:mergedImages};if(!x.player||!Array.isArray(x.seasons)||!Array.isArray(x.matches))throw Error('El archivo no contiene jugador, temporadas y partidos en un formato válido.');if(x.matches.some(m=>!m||typeof m!=='object'))throw Error('El archivo contiene registros de partidos inválidos.');db=x;if(!save()){db=previous;return}try{renderAll()}catch(renderError){db=previous;save();renderAll();throw Error('La importación se revirtió porque falló la actualización de la interfaz: '+renderError.message)}alert('Save importado correctamente: '+db.seasons.length+' temporadas y '+db.matches.length+' partidos. La biblioteca de imágenes fue conservada.')}catch(e){if(db!==previous){db=previous;save();try{renderAll()}catch(_){}}alert('No se pudo importar: '+e.message)}};reader.onerror=()=>alert('No se pudo leer el archivo JSON.');reader.readAsText(file)}
 function resetAll(){if(!confirm('¿Eliminar todos los datos de PES Liga Master de este navegador?'))return;if(!confirm('Confirmación final: esta acción elimina jugador, temporadas y partidos. ¿Eliminar definitivamente?'))return;db=empty();save();renderAll();go('dashboard')}
-function init(){document.getElementById('player-position').innerHTML='<option value="">Seleccionar posición</option>'+POSITIONS.map(p=>`<option>${esc(p)}</option>`).join('');renderAll();}
+
+/* Unifica todos los desplegables de información en ventanas flotantes cerrables */
+function installGlobalDisclosureSystem(){
+ if(document.documentElement.dataset.globalDisclosureReady==='1')return;
+ document.documentElement.dataset.globalDisclosureReady='1';
+ const isDisclosure=d=>d instanceof HTMLDetailsElement;
+ function closeDetails(d){if(!isDisclosure(d))return;d.open=false;d.querySelectorAll('details.global-disclosure[open]').forEach(n=>n.open=false)}
+ function prepare(d){
+  if(!isDisclosure(d))return;
+  d.classList.add('global-disclosure');
+  let panel=d.querySelector(':scope > .global-popover-panel');
+  if(!panel){
+   panel=document.createElement('div');panel.className='global-popover-panel';
+   const nodes=[...d.childNodes].filter(n=>!(n.nodeType===1&&n.tagName==='SUMMARY'));
+   if(!nodes.length)return;
+   d.appendChild(panel);nodes.forEach(n=>panel.appendChild(n));
+  }
+  if(!panel.querySelector(':scope > .global-popover-close')){
+   const close=document.createElement('button');close.type='button';close.className='global-popover-close';close.setAttribute('aria-label','Cerrar detalle');close.title='Cerrar';close.textContent='×';panel.insertBefore(close,panel.firstChild);
+  }
+ }
+ document.addEventListener('click',e=>{
+  const close=e.target.closest('.global-popover-close');
+  if(close){e.preventDefault();e.stopPropagation();const d=close.closest('details.global-disclosure');if(d)closeDetails(d);return}
+  const summary=e.target.closest('details > summary');
+  if(summary){
+   const d=summary.parentElement;
+   if(!isDisclosure(d))return;
+   if(d.open){
+    prepare(d);
+    document.querySelectorAll('details.global-disclosure[open]').forEach(other=>{if(other!==d&&!other.contains(d))closeDetails(other)});
+   }else d.querySelectorAll('details.global-disclosure[open]').forEach(child=>child.open=false);
+   return;
+  }
+  const open=[...document.querySelectorAll('details.global-disclosure[open]')];
+  if(open.length&&!e.target.closest('.global-popover-panel'))open.filter(d=>!open.some(parent=>parent!==d&&parent.contains(d))).forEach(closeDetails);
+ });
+ document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const open=[...document.querySelectorAll('details.global-disclosure[open]')];const deepest=open.filter(d=>!open.some(other=>other!==d&&other.contains(d)));deepest.forEach(closeDetails)});
+}
+
+function init(){installGlobalDisclosureSystem();document.getElementById('player-position').innerHTML='<option value="">Seleccionar posición</option>'+POSITIONS.map(p=>`<option>${esc(p)}</option>`).join('');renderAll();}
 migrateLegacySeasonCrests();
 init();
 optimizeAllExistingImages();
