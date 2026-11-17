@@ -766,11 +766,11 @@ function installGlobalDisclosureSystem(){
  if(document.documentElement.dataset.globalDisclosureReady==='2')return;
  document.documentElement.dataset.globalDisclosureReady='2';
  const isDisclosure=d=>d instanceof HTMLDetailsElement;
- let activePrimary=null;
+ let activePrimary=null,disclosureSequence=0;
  const getSummary=d=>d.querySelector(':scope > summary');
- function closeNested(d){const panel=d.__globalPanel;if(panel)panel.querySelectorAll('details.global-inline-disclosure[open]').forEach(n=>n.open=false)}
+ function closeNested(d){const panel=d.__globalPanel;if(panel)panel.querySelectorAll('details.global-inline-disclosure[open]').forEach(n=>{n.open=false;getSummary(n)?.setAttribute('aria-expanded','false')})}
  function closeDetails(d){
-  if(!isDisclosure(d))return;const panel=d.__globalPanel;closeNested(d);d.open=false;
+  if(!isDisclosure(d))return;const panel=d.__globalPanel;closeNested(d);d.open=false;getSummary(d)?.setAttribute('aria-expanded','false');
   if(panel&&panel.classList.contains('is-floating')){panel.classList.remove('is-floating');panel.style.cssText='';d.appendChild(panel)}
   if(activePrimary===d)activePrimary=null;
  }
@@ -780,6 +780,7 @@ function installGlobalDisclosureSystem(){
   let panel=d.__globalPanel;if(!panel||!panel.isConnected||!panel.classList.contains(panelClass))panel=d.querySelector(':scope > .'+panelClass);
   if(!panel){panel=document.createElement('div');panel.className=panelClass;const nodes=[...d.childNodes].filter(n=>!(n.nodeType===1&&n.tagName==='SUMMARY'));if(!nodes.length)return null;d.appendChild(panel);nodes.forEach(n=>panel.appendChild(n))}
   d.__globalPanel=panel;
+  const summary=getSummary(d);if(summary){if(!summary.id)summary.id='disclosure-trigger-'+(++disclosureSequence);if(!panel.id)panel.id='disclosure-panel-'+disclosureSequence;summary.setAttribute('aria-controls',panel.id);summary.setAttribute('aria-expanded',d.open?'true':'false');panel.setAttribute('role','region');panel.setAttribute('aria-label',(summary.textContent||'Detalle ampliado').trim())}
   if(nested){d.classList.add('global-inline-disclosure')}
   else{let close=panel.querySelector(':scope > .global-popover-close');if(!close){close=document.createElement('button');close.type='button';close.className='global-popover-close';close.setAttribute('aria-label','Cerrar detalle');close.title='Cerrar ventana';close.textContent='×';panel.insertBefore(close,panel.firstChild)}panel.__globalOwner=d}
   return panel;
@@ -793,15 +794,15 @@ function installGlobalDisclosureSystem(){
   const top=below>=Math.min(height,260)?rect.bottom+gap:above>=Math.min(height,260)?rect.top-height-gap:Math.max(margin,Math.min(rect.bottom+gap,window.innerHeight-height-margin));
   panel.style.top=Math.max(margin,Math.min(top,window.innerHeight-height-margin))+'px';
  }
- function openPrimary(d){if(activePrimary&&activePrimary!==d)closeDetails(activePrimary);const panel=prepare(d,false);if(!panel)return;d.open=true;activePrimary=d;panel.classList.add('is-floating');document.body.appendChild(panel);positionPanel(d)}
- function openNested(d){if(!prepare(d,true))return;d.open=true}
- function decorate(root=document){const list=[];if(isDisclosure(root))list.push(root);if(root.querySelectorAll)list.push(...root.querySelectorAll('details'));list.forEach(d=>d.classList.add('global-disclosure'))}
+ function openPrimary(d){if(activePrimary&&activePrimary!==d)closeDetails(activePrimary);const panel=prepare(d,false);if(!panel)return;d.open=true;getSummary(d)?.setAttribute('aria-expanded','true');activePrimary=d;panel.classList.add('is-floating');document.body.appendChild(panel);positionPanel(d)}
+ function openNested(d){if(!prepare(d,true))return;d.open=true;getSummary(d)?.setAttribute('aria-expanded','true')}
+ function decorate(root=document){const list=[];if(isDisclosure(root))list.push(root);if(root.querySelectorAll)list.push(...root.querySelectorAll('details'));list.forEach(d=>{d.classList.add('global-disclosure');const summary=getSummary(d);if(summary&&!summary.hasAttribute('aria-expanded'))summary.setAttribute('aria-expanded',d.open?'true':'false')})}
  function closeActive(){if(activePrimary)closeDetails(activePrimary)}
  document.addEventListener('click',e=>{
   const close=e.target.closest('.global-popover-close');if(close){e.preventDefault();e.stopPropagation();const owner=close.closest('.global-popover-panel')?.__globalOwner;if(owner)closeDetails(owner);return}
   const summary=e.target.closest('details > summary');
   if(summary){const d=summary.parentElement;if(!isDisclosure(d))return;e.preventDefault();const insideBubble=!!d.parentElement?.closest('.global-popover-panel,.global-inline-panel');
-   if(insideBubble){d.classList.add('global-inline-disclosure');if(d.open){closeNested(d);d.open=false}else openNested(d);return}
+   if(insideBubble){d.classList.add('global-inline-disclosure');if(d.open){closeNested(d);d.open=false;getSummary(d)?.setAttribute('aria-expanded','false')}else openNested(d);return}
    if(d.open){closeDetails(d);return}openPrimary(d);return
   }
   if(activePrimary){const panel=activePrimary.__globalPanel,anchor=getSummary(activePrimary);if(!panel?.contains(e.target)&&!anchor?.contains(e.target))closeActive()}
