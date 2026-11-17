@@ -352,6 +352,43 @@ details[open]>.match-detail-toggle::after{content:'−'}
 #stats-primary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px 18px}#stats-primary .metric-item{padding:10px 12px!important;border-bottom:1px solid #26364d}#advanced-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px 18px}#advanced-metrics .metric-item{padding:9px 12px!important}
 #matches-table table{min-width:900px;table-layout:auto}#matches-table th,#matches-table td{padding:8px 10px;vertical-align:middle}#matches-table td:last-child{min-width:230px}#matches-table .match-detail{margin-top:5px}#matches-table .match-detail-toggle{min-height:32px;padding:6px 9px;border-radius:7px;background:transparent;border-color:transparent}#matches-table .match-detail-heading{display:flex;flex-direction:row;align-items:center;gap:8px;flex-wrap:wrap}#matches-table .match-detail-heading>b{font-size:10px}#matches-table .match-detail-heading>span{font-size:9px}#matches-table .match-detail-heading>strong{font-size:10px}#matches-table .match-detail-action{font-size:9px}#matches-table .match-detail-action b{display:none}#matches-table .btn.small{padding:5px 8px;min-height:26px}
 @media(max-width:1050px){#stats-primary,#advanced-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:720px){#season-list .season-row-card{grid-template-columns:minmax(0,1fr)!important}#season-list .season-row-card>.toolbar{justify-content:flex-start}#stats-primary,#advanced-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}#recent-matches .match-detail-heading{display:grid;grid-template-columns:1fr}#recent-matches .match-detail-heading>strong{grid-column:1;grid-row:auto}#matches-table td:last-child{min-width:200px}}@media(max-width:420px){#stats-primary,#advanced-metrics{grid-template-columns:1fr}}
+
+/* Rediseño de la ficha del jugador */
+#page-player>.card:first-child{position:relative;overflow:hidden;background:radial-gradient(circle at 94% 12%,rgba(75,208,164,.17),transparent 27%),linear-gradient(120deg,#172d43,#111f31);border-color:#31516a;padding:clamp(18px,2vw,28px)}
+#page-player>.card:first-child:after{content:"⚽";position:absolute;right:5%;top:8%;font-size:clamp(70px,9vw,130px);opacity:.08;pointer-events:none;transform:rotate(-14deg)}
+#page-player>.card:first-child .card-head h2{font-size:20px}
+#page-player>.card:first-child .card-head p{font-size:12px}
+#page-player>.card:first-child .form-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#page-player>.card:first-child .field input,#page-player>.card:first-child .field select{min-height:42px}
+#page-player>.section{margin-top:22px}
+#player-overview{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+#player-overview .metric-item{border:1px solid #2a4058;border-radius:12px;background:linear-gradient(145deg,#172a40,#111f30);padding:13px 15px;min-height:92px}
+#player-overview .metric{font-size:clamp(23px,2.2vw,31px);margin:7px 0 3px}
+#player-overview .metric-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;color:#9db8d2}
+#player-overview .metric-sub{font-size:10px}
+/* Calendario: el encuentro se lee una sola vez y el resto vive en un popover */
+#matches-table table{min-width:0;table-layout:fixed;width:100%}
+#matches-table th,#matches-table td{padding:11px 12px;vertical-align:middle}
+#matches-table th:nth-child(1){width:9%}
+#matches-table th:nth-child(2){width:8%}
+#matches-table th:nth-child(3){width:13%}
+#matches-table th:nth-child(4),#matches-table th:nth-child(5),#matches-table th:nth-child(6){display:none}
+#matches-table td:nth-child(4),#matches-table td:nth-child(5),#matches-table td:nth-child(6){display:none}
+#matches-table th:nth-child(7){width:10%}
+#matches-table th:nth-child(8){width:17%}
+#matches-table td:last-child{min-width:0}
+#matches-table .match-detail{position:relative;margin:0}
+#matches-table .match-detail-toggle{display:inline-flex;justify-content:center;align-items:center;min-height:36px;padding:8px 13px;border:1px solid #35516b;border-radius:10px;background:#172b41;font-size:11px;font-weight:800;white-space:nowrap}
+#matches-table .match-detail-toggle:hover{border-color:#65d6aa;background:#1b354b}
+#matches-table .match-detail-heading{display:none}
+#matches-table .match-detail-action{font-size:11px}
+#matches-table .match-detail-action b{display:none}
+#matches-table .match-detail[open] .match-detail-panel{position:absolute;z-index:100;right:0;top:calc(100% + 8px);width:min(620px,70vw);max-height:70vh;overflow:auto;padding:15px;border:1px solid #3a5874;border-radius:14px;background:#102136;box-shadow:0 20px 55px #000a}
+#matches-table .match-detail-panel .match-detail-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+#matches-table .match-detail-panel .match-detail-item{padding:8px 9px;border-radius:8px;background:#192e44;min-width:0}
+#matches-table .match-detail-panel .match-detail-item b{overflow-wrap:anywhere}
+@media(max-width:900px){#player-overview{grid-template-columns:repeat(3,minmax(0,1fr))}#matches-table table{min-width:850px}#matches-table .table-wrap{overflow-x:auto}}
+@media(max-width:620px){#page-player>.card:first-child .form-grid{grid-template-columns:1fr}#player-overview{grid-template-columns:repeat(2,minmax(0,1fr))}#matches-table .match-detail[open] .match-detail-panel{position:fixed;top:12vh;left:5vw;right:5vw;width:90vw;max-height:76vh}#matches-table .match-detail-panel .match-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head>
 <body><div class="app">
 <aside class="side"><div class="brand"><div class="crest">P</div><div><b>PES LIGA MASTER</b><small>Modo Ser Leyenda · Archivo personal</small></div></div><div><div class="nav-label">Principal</div><nav class="nav" id="nav">
