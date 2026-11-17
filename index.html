@@ -808,7 +808,7 @@ function installGlobalDisclosureSystem(){
  });
  document.addEventListener('keydown',e=>{if(e.key!=='Escape'||!activePrimary)return;const nested=[...activePrimary.__globalPanel.querySelectorAll('details.global-inline-disclosure[open]')];if(nested.length){const deepest=nested[nested.length-1];closeNested(deepest);deepest.open=false}else closeActive()});
  const reposition=()=>{if(activePrimary)positionPanel(activePrimary)};window.addEventListener('resize',reposition);window.addEventListener('scroll',reposition,true);
- decorate();const observer=new MutationObserver(records=>records.forEach(record=>record.addedNodes.forEach(node=>{if(node.nodeType===1)decorate(node)})));observer.observe(document.body,{childList:true,subtree:true});
+ decorate();const observer=new MutationObserver(records=>{if(activePrimary&&!getSummary(activePrimary)?.isConnected)closeActive();records.forEach(record=>record.addedNodes.forEach(node=>{if(node.nodeType===1)decorate(node)}))});observer.observe(document.body,{childList:true,subtree:true});
 }
 function init(){installGlobalDisclosureSystem();document.getElementById('player-position').innerHTML='<option value="">Seleccionar posición</option>'+POSITIONS.map(p=>`<option>${esc(p)}</option>`).join('');renderAll();}
 migrateLegacySeasonCrests();
