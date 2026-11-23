@@ -1540,12 +1540,27 @@ function renderStats(){
  if([...sel.options].some(o=>o.value===old))sel.value=old;
  const ms=scopedMatches(),a=aggregate(ms);
  const seasons=db.seasons.map(x=>String(x.id));
+ const seasonScope=filterState.statsSeasons?.length?new Set(filterState.statsSeasons):sel.value!=='all'?new Set([String(sel.value)]):null;
+ const competitionScope=filterState.statsCompetitions?.length?new Set(filterState.statsCompetitions.map(normalizedTeamKey)):null;
+ const clubScope=filterState.statsClubs?.length?new Set(filterState.statsClubs.map(normalizedTeamKey)):null;
+ const statsOutcomeAllowed=outcome=>{
+  if(seasonScope&&!seasonScope.has(String(outcome.seasonId)))return false;
+  if(competitionScope&&!competitionScope.has(normalizedTeamKey(outcome.competition)))return false;
+  const teamType=document.getElementById('stats-type').value;
+  if(teamType==='club'&&outcome.teamType==='national')return false;
+  if(teamType==='national'&&outcome.teamType!=='national')return false;
+  if(clubScope){const team=seasonTeamName(outcome.season,outcome.teamType==='national'?'national':'club');if(!clubScope.has(normalizedTeamKey(team)))return false}
+  return true;
+ };
+ const selectedOutcomes=db.seasons.filter(season=>!seasonScope||seasonScope.has(String(season.id))).flatMap(seasonCompetitionOutcomes).filter(statsOutcomeAllowed);
+ const selectedTitleOutcomes=selectedOutcomes.filter(isChampionOutcome);
  const competitions=[...new Set(played().map(m=>m.competition).filter(Boolean))].sort((x,y)=>x.localeCompare(y,'es'));
  const clubs=[...new Set(played().map(m=>m.club).filter(Boolean))].sort((x,y)=>x.localeCompare(y,'es'));
  document.getElementById('stats-multi-filters').innerHTML=multiChecklist('statsSeasons','Temporadas',seasons)+multiChecklist('statsCompetitions','Competiciones',competitions)+multiChecklist('statsClubs','Clubes',clubs);
  const per90=(v)=>a.minutes?fmt(v*90/a.minutes,2):'—';
  document.getElementById('stats-primary').innerHTML=[
   metric('Partidos jugados',fmt(a.matches),'Encuentros con estadísticas'),
+  alwaysMetric('Títulos',selectedTitleOutcomes.length,'Competiciones ganadas en el alcance actual'),
   metric('Dobletes / Hattricks',fmt(a.doubles)+' / '+fmt(a.hattricks),'2 y 3 goles en un partido'),
   metric('Póker / Re-póker',fmt(a.pokers)+' / '+fmt(a.repokers),'4 y 5 goles en un partido'),
   metric('Goles',fmt(a.goals),'Total de la selección'),
