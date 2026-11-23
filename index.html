@@ -1279,6 +1279,88 @@ table{max-width:100%}
 @media(max-width:760px){.impact-match-grid{grid-template-columns:1fr}.impact-match-intro{flex-direction:column}.global-popover-panel{width:calc(100vw - 20px)!important;left:10px!important;max-height:72vh!important}}
 @media(max-width:520px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(2,minmax(0,1fr))}.season-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric-item{padding:10px 8px}.metric-item .metric{font-size:clamp(20px,6vw,25px)}.impact-match-card{padding:12px}.table-wrap table{min-width:580px}}
 @media(max-width:360px){.stats-grid,.three{grid-template-columns:1fr}.metric-item .metric{font-size:23px}}
+
+/* Corrección específica: evitar el estrechamiento acumulativo de detalles anidados */
+body>.global-popover-panel.is-floating{
+ width:min(920px,calc(100vw - 28px))!important;
+ min-width:min(560px,calc(100vw - 28px))!important;
+ max-width:calc(100vw - 28px)!important;
+ box-sizing:border-box!important;
+}
+body>.global-popover-panel.is-floating>*{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+body>.global-popover-panel.is-floating .edition-grid,
+body>.global-popover-panel.is-floating .extreme-list{
+ display:grid!important;
+ grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))!important;
+ width:100%!important;min-width:0!important;gap:12px!important;
+}
+body>.global-popover-panel.is-floating .edition-card,
+body>.global-popover-panel.is-floating .extreme-card,
+body>.global-popover-panel.is-floating .competition-performance,
+body>.global-popover-panel.is-floating .competition-performance-more,
+body>.global-popover-panel.is-floating .competition-performance-body{
+ width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
+}
+details.global-inline-disclosure{
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ margin:9px 0 0!important;padding:0!important;border:0!important;
+ box-sizing:border-box!important;
+}
+details.global-inline-disclosure>summary{width:100%!important;min-width:0!important;box-sizing:border-box!important}
+details.global-inline-disclosure>.global-inline-panel,
+.global-inline-panel{
+ display:block;width:100%!important;min-width:0!important;max-width:100%!important;
+ margin:8px 0 0!important;padding:10px!important;box-sizing:border-box!important;
+}
+.global-inline-panel .match-detail,
+.global-inline-panel .match-detail-panel,
+.global-inline-panel .match-detail-section,
+.global-inline-panel .match-detail-grid{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.match-detail{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.match-detail>summary{width:100%;min-width:0;box-sizing:border-box}
+.match-detail-heading{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;min-width:0;max-width:100%}
+.match-detail-heading>*{min-width:0;max-width:100%;overflow-wrap:break-word;word-break:normal}
+.match-detail-panel{
+ position:static!important;inset:auto!important;transform:none!important;
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;
+ max-height:none!important;overflow:visible!important;box-sizing:border-box!important;
+}
+.match-detail-grid,.match-stat-grid{
+ display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,175px),1fr))!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
+}
+.match-detail-item{min-width:0!important;max-width:100%;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;box-sizing:border-box}
+.match-detail-item span,.match-detail-item b{min-width:0;max-width:100%;overflow-wrap:break-word;word-break:normal}
+.match-detail-item b{text-align:right}
+#page-clubs #clubs-list>.card>.stats-grid,
+#clubs-list>.card>.stats-grid{
+ display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr))!important;
+ gap:9px!important;width:100%;min-width:0;align-items:stretch;
+}
+#clubs-list>.card>.stats-grid>.metric-item{
+ min-width:0!important;width:auto!important;max-width:100%!important;
+ padding:12px!important;min-height:82px!important;overflow-wrap:normal!important;
+}
+#clubs-list>.card>.stats-grid .metric-label,
+#clubs-list>.card>.stats-grid .metric-sub{
+ font-size:10px!important;line-height:1.35!important;overflow-wrap:break-word!important;word-break:normal!important;
+}
+#clubs-list>.card>.stats-grid .metric{
+ font-size:clamp(21px,2vw,28px)!important;line-height:1.08!important;white-space:nowrap!important;
+}
+#clubs-list>.card>.stats-grid .metric-label{max-width:100%}
+@media(max-width:620px){
+ body>.global-popover-panel.is-floating{width:calc(100vw - 16px)!important;min-width:0!important;max-width:calc(100vw - 16px)!important;left:8px!important}
+ body>.global-popover-panel.is-floating .edition-grid,
+ body>.global-popover-panel.is-floating .extreme-list{grid-template-columns:minmax(0,1fr)!important}
+ .match-detail-grid,.match-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #clubs-list>.card>.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:360px){
+ .match-detail-grid,.match-stat-grid{grid-template-columns:minmax(0,1fr)!important}
+ #clubs-list>.card>.stats-grid{grid-template-columns:minmax(0,1fr)!important}
+}
 </style></head>
 <body><div class="app">
 <aside class="side"><div class="brand"><div class="crest">P</div><div><b>PES LIGA MASTER</b><small>Modo Ser Leyenda · Archivo personal</small></div></div><div><div class="nav-label">Principal</div><nav class="nav" id="nav">
