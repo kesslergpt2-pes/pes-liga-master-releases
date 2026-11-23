@@ -1871,11 +1871,25 @@ function installGlobalDisclosureSystem(){
   return panel;
  }
  function positionPanel(d){
-  if(!d||!d.__globalPanel)return;const panel=d.__globalPanel,anchor=getSummary(d),rect=anchor?.getBoundingClientRect();
+  if(!d||!d.__globalPanel)return;
+  const panel=d.__globalPanel,anchor=getSummary(d),rect=anchor?.getBoundingClientRect();
   if(!rect||rect.bottom<0||rect.top>window.innerHeight){closeDetails(d);return}
-  const margin=10,gap=8,width=Math.min(700,Math.max(220,window.innerWidth-margin*2));
-  panel.style.width=width+'px';panel.style.maxWidth='calc(100vw - '+margin*2+'px)';panel.style.maxHeight=Math.min(window.innerHeight*.76,720)+'px';panel.style.overflow='auto';panel.style.position='fixed';panel.style.zIndex='1500';panel.style.boxSizing='border-box';panel.style.left=Math.max(margin,Math.min(rect.left,window.innerWidth-width-margin))+'px';panel.style.top=margin+'px';
-  const height=panel.getBoundingClientRect().height,below=window.innerHeight-rect.bottom-gap-margin,above=rect.top-gap-margin;
+  const margin=16,gap=8,viewportWidth=document.documentElement.clientWidth||window.innerWidth;
+  const width=Math.max(1,Math.min(900,viewportWidth-margin*2));
+  panel.style.width=width+'px';
+  panel.style.maxWidth='calc(100vw - '+margin*2+'px)';
+  panel.style.maxHeight=Math.min(window.innerHeight*.82,760)+'px';
+  panel.style.overflow='auto';
+  panel.style.position='fixed';
+  panel.style.zIndex='1500';
+  panel.style.boxSizing='border-box';
+  // La ventana es un panel de lectura: siempre centrado en el viewport,
+  // nunca alineado al borde derecho de una tarjeta o activador.
+  panel.style.left=Math.max(margin,(viewportWidth-width)/2)+'px';
+  panel.style.right='auto';
+  panel.style.top=margin+'px';
+  const height=panel.getBoundingClientRect().height;
+  const below=window.innerHeight-rect.bottom-gap-margin,above=rect.top-gap-margin;
   const top=below>=Math.min(height,260)?rect.bottom+gap:above>=Math.min(height,260)?rect.top-height-gap:Math.max(margin,Math.min(rect.bottom+gap,window.innerHeight-height-margin));
   panel.style.top=Math.max(margin,Math.min(top,window.innerHeight-height-margin))+'px';
  }
