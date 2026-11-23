@@ -1768,7 +1768,8 @@ function matchImpactScore(m){
  // Los subconjuntos no se vuelven a sumar: los goles libres reciben solo un plus;
  // los tiros y pases se separan entre acciones logradas y fallidas.
  return goals+freeKickGoals*.1+assists*.9+onTarget*.2+completed*.1+v('ballsReceived')*.125
-  -missedShots*.1-missedPasses*.2+v('interceptions')*.15+v('corners')*.04
+  -missedShots*.1-missedPasses*.2+v('interceptions')*.15+v('corners')*.04+v('freeKicks')*.03
+  -v('offsides')*.1-v('fouls')*.05+v('distance')*.001
   +Math.max(-.4,Math.min(.4,(rating-5)*.08));
 }
 function matchImpactSummaryHTML(ms){
@@ -1897,7 +1898,7 @@ function renderAdvancedComparisons(){
 
 function renderIntelligence(){
  const ms=played().filter(m=>m.stats),a=aggregate(ms),scores=ms.map(m=>matchImpactScore(m)),avg=scores.length?scores.reduce((x,y)=>x+y,0)/scores.length:0;
- document.getElementById('intelligence-kpis').innerHTML=[metric('Impacto medio',scores.length?fmt(avg,2):'—','Puntos por partido oficial'),metric('Goles + asistencias',a.ga,'Participaciones directas'),metric('Efectividad de tiro',a.shots?fmt(a.shotAccuracy,1)+'%':'—','Tiros al arco / tiros'),metric('Precisión de pase',a.passes?fmt(a.passAccuracy,1)+'%':'—','Pases completados / pases')].join('');
+ document.getElementById('intelligence-kpis').innerHTML=[metric('Impacto medio',scores.length?fmt(avg,2):'—','Puntos por partido oficial'),metric('Impacto por 90 min',ms.reduce((sum,m)=>sum+(num(m.stats?.minutes)>0?matchImpactScore(m)*90/num(m.stats.minutes):0),0)/(ms.filter(m=>num(m.stats?.minutes)>0).length||1)?fmt(ms.filter(m=>num(m.stats?.minutes)>0).reduce((sum,m)=>sum+matchImpactScore(m)*90/num(m.stats.minutes),0)/ms.filter(m=>num(m.stats?.minutes)>0).length,2):'—','Normalizado por minutos'),metric('Goles + asistencias',a.ga,'Participaciones directas'),metric('Efectividad de tiro',a.shots?fmt(a.shotAccuracy,1)+'%':'—','Tiros al arco / tiros'),metric('Precisión de pase',a.passes?fmt(a.passAccuracy,1)+'%':'—','Pases completados / pases')].join('');
  document.getElementById('intelligence-extremes').innerHTML=matchImpactSummaryHTML(ms);
  document.getElementById('intelligence-season-trends').innerHTML=careerTrendTable();
  const comps=careerMatchGroups(ms,m=>m.competition).filter(x=>x.stats.matches>=2).sort((x,y)=>(y.stats.matches?y.stats.ga/y.stats.matches:0)-(x.stats.matches?x.stats.ga/x.stats.matches:0)).slice(0,5);
