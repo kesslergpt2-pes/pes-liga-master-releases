@@ -1938,6 +1938,20 @@ function renderCareerRecords(){
  add('Mayor racha goleadora',bestGoal,'Partidos consecutivos marcando');
  const seasonBest=db.seasons.map(season=>({season,a:aggregate(seasonMatches(season.id))})).filter(x=>x.a.matches).sort((x,y)=>y.a.ga/y.a.matches-x.a.ga/x.a.matches)[0];
  if(seasonBest)add('Mejor temporada por G+A/PJ',fmt(seasonBest.a.ga/seasonBest.a.matches,2),seasonName(seasonBest.season)+' · '+seasonBest.a.matches+' partidos');
+
+ const seasonStats=db.seasons.map(season=>({season,ms:seasonMatches(season.id),a:aggregate(seasonMatches(season.id))})).filter(x=>x.a.matches);
+ const bestSeasonGoals=seasonStats.reduce((best,x)=>!best||x.a.goals>best.a.goals?x:best,null),bestSeasonAssists=seasonStats.reduce((best,x)=>!best||x.a.assists>best.a.assists?x:best,null),bestSeasonFigures=seasonStats.reduce((best,x)=>!best||x.a.starMatches>best.a.starMatches?x:best,null);
+ if(bestSeasonGoals)add('Más goles en una temporada',bestSeasonGoals.a.goals,seasonName(bestSeasonGoals.season));
+ if(bestSeasonAssists)add('Más asistencias en una temporada',bestSeasonAssists.a.assists,seasonName(bestSeasonAssists.season));
+ if(bestSeasonFigures)add('Más veces figura en una temporada',bestSeasonFigures.a.starMatches,seasonName(bestSeasonFigures.season));
+ const compRows=careerMatchGroups(ms,m=>m.competition).sort((x,y)=>y.stats.goals-x.stats.goals),topComp=compRows[0];
+ if(topComp)add('Más goles en una competición',topComp.stats.goals,topComp.name+' · '+topComp.stats.matches+' partidos');
+ let figureRun=0,bestFigureRun=0,titleRun=0,bestTitleRun=0;
+ ms.forEach(m=>{if(isMatchFigure(m)){figureRun++;bestFigureRun=Math.max(bestFigureRun,figureRun)}else figureRun=0});
+ db.seasons.slice().sort((x,y)=>Number(x.number)-Number(y.number)).forEach(season=>{if(seasonCompetitionOutcomes(season).some(isChampionOutcome)){titleRun++;bestTitleRun=Math.max(bestTitleRun,titleRun)}else titleRun=0});
+ add('Mayor racha de partidos como figura',bestFigureRun,'Partidos oficiales consecutivos');
+ add('Mayor racha de temporadas con títulos',bestTitleRun,'Temporadas consecutivas con al menos un campeonato');
+
  const cards=records.map(r=>'<div class="record-highlight"><div><span>'+esc(r.label)+'</span><strong>'+esc(String(r.value))+'</strong><small>'+esc(r.detail)+'</small></div>'+(r.match?'<div class="record-highlight-match">'+matchDetailsHTML(r.match)+'</div>':'')+'</div>').join('');
  const outcomeCount=countTitles();
  document.getElementById('career-records').innerHTML='<div class="grid stats-grid">'+metric('Partidos oficiales',a.matches,'Amistosos excluidos')+metric('Títulos',outcomeCount,'Resultados de temporadas')+metric('Hattricks',a.hattricks,'Tres goles exactos')+metric('Figuras',a.starMatches,'Distinciones registradas')+'</div><div class="record-highlight-grid">'+(cards||emptyState('Todavía no hay datos suficientes para calcular récords.'))+'</div><p class="smalltext">Los récords se recalculan automáticamente. Los máximos enlazan al detalle del partido que los originó. Las rachas se calculan por orden cronológico de los partidos oficiales registrados.</p>';
