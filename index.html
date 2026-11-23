@@ -1231,6 +1231,54 @@ details.global-inline-disclosure>summary::after{color:#a7c9b3!important}
 #season-list .season-trophy-fallback,.generic-trophy{display:inline-grid;place-items:center;width:21px;height:21px;flex:0 0 21px;font-size:15px;line-height:1}
 #season-list .season-trophy-item>span:last-child{min-width:0;overflow-wrap:anywhere}
 .generic-trophy{margin-right:5px;vertical-align:middle}
+
+/* Revisión integral de contenedores, grillas, tipografía y ventanas */
+:root{--ui-gap:clamp(9px,1vw,15px)}
+.main,.page,.card,.record,.record-body,.table-wrap,.season-row,.season-row-card,.hero,.honour-result,.edition-card,.extreme-card{min-width:0}
+.page{width:100%;overflow:visible}
+.grid,.stats-grid,.form-grid,.attribute-grid,.edition-grid,.extreme-list,.season-kpi-grid{min-width:0;align-items:stretch}
+.grid>* ,.stats-grid>* ,.form-grid>* ,.attribute-grid>*{min-width:0;max-width:100%}
+.card,.record,.honour-result,.edition-card,.extreme-card{overflow-wrap:anywhere}
+.card{height:auto;max-width:100%}
+.card-head,.section,.toolbar,.season-title-line,.season-identity-chips,.season-identity-line{min-width:0;flex-wrap:wrap}
+.card-head>* ,.section>*{min-width:0}
+.metric-item{min-width:0;overflow:hidden}
+.metric-label,.metric-sub{overflow-wrap:anywhere;word-break:normal}
+.metric-item .metric{max-width:100%;overflow-wrap:anywhere;white-space:normal}
+.field,.field input,.field select,.field textarea{min-width:0;max-width:100%}
+.table-wrap{max-width:100%;overscroll-behavior-x:contain}
+table{max-width:100%}
+.record>summary{min-width:0;overflow-wrap:anywhere}
+.record>summary small{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.record-body{max-width:100%;overflow-wrap:anywhere}
+.global-popover-panel{max-width:calc(100vw - 20px)!important;max-height:76vh!important;overflow:auto!important;overscroll-behavior:contain;border-radius:14px;box-shadow:0 18px 55px #000b}
+.global-popover-panel>*{min-width:0;max-width:100%}
+.global-popover-panel .grid,.global-popover-panel .form-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.global-popover-close{position:sticky;top:0;float:right;z-index:4;margin:0 0 7px 8px}
+.global-inline-panel{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.match-detail-grid,.season-match-stats-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,155px),1fr))}
+.match-detail-item,.match-stat{min-width:0;align-items:flex-start}
+.match-detail-item span,.match-stat span{min-width:0;overflow-wrap:anywhere}
+.match-detail-item b,.match-stat b{min-width:0;overflow-wrap:anywhere}
+.impact-match-section{margin:22px 0 20px;padding:clamp(14px,2vw,21px);border:1px solid #31465e;border-radius:15px;background:linear-gradient(145deg,#16283b,#111d2d)}
+.impact-match-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:13px}
+.impact-match-intro h3{margin:0;font-size:16px;letter-spacing:-.02em}
+.impact-match-intro p{margin:6px 0 0;color:#a9bad0;font-size:11px;line-height:1.55;max-width:780px}
+.impact-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.impact-match-card{min-width:0;padding:14px;border:1px solid #344b63;border-radius:12px;background:#0f1b2a}
+.impact-best{border-top:3px solid #63d6a5}.impact-worst{border-top:3px solid #d58b83}
+.impact-match-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#a9bad0;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.impact-match-heading b{color:#f3f7fc;font-size:17px;letter-spacing:-.03em;white-space:nowrap}
+.impact-match-fixture{display:grid;gap:5px;margin-top:12px}
+.impact-match-fixture strong{font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.impact-match-fixture strong span{color:#7e91a9;font-weight:500}
+.impact-match-fixture small{font-size:10px;line-height:1.5;color:#8fa3bb}
+.impact-match-card>p{font-size:10px;color:#93a7be;margin:8px 0}
+.impact-method{font-size:10px;line-height:1.65;color:#8196af;margin:12px 1px 0}
+.impact-match-card .match-detail-toggle{max-width:100%;white-space:normal}
+@media(max-width:760px){.impact-match-grid{grid-template-columns:1fr}.impact-match-intro{flex-direction:column}.global-popover-panel{width:calc(100vw - 20px)!important;left:10px!important;max-height:72vh!important}}
+@media(max-width:520px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(2,minmax(0,1fr))}.season-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric-item{padding:10px 8px}.metric-item .metric{font-size:clamp(20px,6vw,25px)}.impact-match-card{padding:12px}.table-wrap table{min-width:580px}}
+@media(max-width:360px){.stats-grid,.three{grid-template-columns:1fr}.metric-item .metric{font-size:23px}}
 </style></head>
 <body><div class="app">
 <aside class="side"><div class="brand"><div class="crest">P</div><div><b>PES LIGA MASTER</b><small>Modo Ser Leyenda · Archivo personal</small></div></div><div><div class="nav-label">Principal</div><nav class="nav" id="nav">
@@ -1534,6 +1582,26 @@ function renderClubs(){
 }
 
 function scopedMatches(){let ms=played();const season=document.getElementById('stats-scope').value,type=document.getElementById('stats-type').value;if(filterState.statsSeasons?.length)ms=ms.filter(m=>filterState.statsSeasons.includes(String(m.seasonId)));else if(season!=='all')ms=ms.filter(m=>m.seasonId===season);if(filterState.statsCompetitions?.length)ms=ms.filter(m=>filterState.statsCompetitions.includes(m.competition));if(filterState.statsClubs?.length)ms=ms.filter(m=>filterState.statsClubs.includes(m.club||''));if(type==='club')ms=ms.filter(m=>!isNationalTeamMatch(m));if(type==='national')ms=ms.filter(isNationalTeamMatch);return ms}
+function matchImpactScore(m){
+ const x=m?.stats||{},v=k=>Math.max(0,num(x[k]));
+ const goals=v('goals'),freeKickGoals=Math.min(goals,v('freeKickGoals')),assists=v('assists');
+ const shots=v('shots'),onTarget=Math.min(shots,v('shotsOnTarget')),passes=v('passes'),completed=Math.min(passes,v('passesCompleted'));
+ const missedShots=Math.max(0,shots-onTarget),missedPasses=Math.max(0,passes-completed);
+ const rating=v('rating');
+ // Los subconjuntos no se vuelven a sumar: los goles libres reciben solo un plus;
+ // los tiros y pases se separan entre acciones logradas y fallidas.
+ return goals+freeKickGoals*.1+assists*.9+onTarget*.2+completed*.1+v('ballsReceived')*.125
+  -missedShots*.1-missedPasses*.2+v('interceptions')*.15+v('corners')*.04
+  +Math.max(-.4,Math.min(.4,(rating-5)*.08));
+}
+function matchImpactSummaryHTML(ms){
+ const ranked=ms.filter(m=>m.played&&!isFriendly(m)&&m.stats).map(m=>({m,score:matchImpactScore(m)})).sort((a,b)=>b.score-a.score);
+ if(!ranked.length)return emptyState('Todavía no hay partidos oficiales con estadísticas suficientes para calcular el rendimiento integral.');
+ const best=ranked[0],worst=ranked[ranked.length-1];
+ const card=(label,item,kind,desc)=>'<article class="impact-match-card '+kind+'"><div class="impact-match-heading"><span>'+label+'</span><b>'+fmt(item.score,2)+' pts</b></div><div class="impact-match-fixture"><strong>'+esc(item.m.club||'Equipo')+' <span>vs.</span> '+esc(item.m.opponent||'Rival')+'</strong><small>'+date(item.m.date)+' · '+esc(item.m.competition||'Sin competición')+' · '+esc(seasonName(seasonById(item.m.seasonId)||{number:'?'}))+'</small></div><p>'+desc+'</p>'+matchDetailsHTML(item.m)+'</article>';
+ const detail='Índice calculado con goles, asistencias, precisión de tiro y pase, balones recibidos, recuperaciones, córners y valoración como factor secundario.';
+ return '<section class="impact-match-section"><div class="impact-match-intro"><div><h3>Mejor partido y peor partido</h3><p>Comparación integral del rendimiento en el alcance seleccionado. '+detail+'</p></div><span class="pill">Índice de impacto</span></div><div class="impact-match-grid">'+card('Mejor partido',best,'impact-best','Mayor impacto estadístico total.')+card('Peor partido',worst,'impact-worst','Menor impacto según las acciones positivas y negativas registradas.')+'</div><p class="impact-method">Ponderación: gol 1,00 · gol de tiro libre +0,10 · asistencia 0,90 · tiro al arco 0,20 · pase completo 0,10 · balón recibido 0,125 · tiro errado −0,10 · pase errado −0,20. Intercepciones y córners suman un aporte menor; la valoración solo desempata/modula levemente. Penales no se vuelven a sumar porque ya están incluidos en goles.</p></section>';
+}
 function renderStats(){
  const sel=document.getElementById('stats-scope'),old=sel.value;
  sel.innerHTML='<option value="all">Toda la carrera</option>'+db.seasons.map(s=>'<option value="'+esc(s.id)+'">'+esc(seasonName(s))+'</option>').join('');
@@ -1599,7 +1667,7 @@ function renderStats(){
   row.name=outcome.competition;row.count++;row.seasons.push(seasonName(outcome.season));titleByCompetition.set(key,row);
  });
  const titleBreakdown=titleByCompetition.size?'<div class="subsection">Títulos ganados por competición</div><div class="table-wrap"><table><thead><tr><th>Competición</th><th>Veces campeón</th><th>Temporadas</th></tr></thead><tbody>'+[...titleByCompetition.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'es')).map(row=>'<tr><td>'+trophyLabel(row.name)+'</td><td><b>'+row.count+'</b></td><td>'+row.seasons.map(esc).join(' · ')+'</td></tr>').join('')+'</tbody></table></div>':emptyState('Todavía no hay títulos en el alcance seleccionado.');
- document.getElementById('stats-breakdowns').innerHTML=titleBreakdown+'<div class="subsection">Rendimiento por edición de competición</div>'+editionStatsHTML(ms)+renderGroups('Todas las estadísticas por temporada',bySeason)+renderGroups('Todas las estadísticas por competición',byComp)+renderGroups('Todas las estadísticas por club',byClub)+renderGroups('Cruce: temporada + competición + club',byCombination)+'<div class="subsection">Récords individuales por estadística · partido máximo y mínimo</div>'+matchExtremesHTML(ms);
+ document.getElementById('stats-breakdowns').innerHTML=matchImpactSummaryHTML(ms)+titleBreakdown+'<div class="subsection">Rendimiento por edición de competición</div>'+editionStatsHTML(ms)+renderGroups('Todas las estadísticas por temporada',bySeason)+renderGroups('Todas las estadísticas por competición',byComp)+renderGroups('Todas las estadísticas por club',byClub)+renderGroups('Cruce: temporada + competición + club',byCombination)+'<div class="subsection">Récords individuales por estadística · partido máximo y mínimo</div>'+matchExtremesHTML(ms);
  const selected=[];if(filterState.statsSeasons?.length)selected.push(filterState.statsSeasons.length+' temporada(s)');if(filterState.statsCompetitions?.length)selected.push(filterState.statsCompetitions.length+' competición(es)');if(filterState.statsClubs?.length)selected.push(filterState.statsClubs.length+' club(es)');
  document.getElementById('stats-count-label').textContent=ms.length+' partidos en el alcance actual'+(selected.length?' · Filtros: '+selected.join(' / '):' · Todos los registros disponibles');
 }
