@@ -411,8 +411,8 @@ details[open]>.match-detail-toggle::after{content:'−'}
 details.global-disclosure{position:relative;min-width:0}
 details.global-disclosure>summary{cursor:pointer;list-style:none}
 details.global-disclosure>summary::-webkit-details-marker{display:none}
-body>.global-popover-panel.is-floating{position:fixed!important;z-index:1500!important;display:block!important;width:min(700px,calc(100vw - 20px));max-width:calc(100vw - 20px);max-height:76vh;overflow:auto;overscroll-behavior:contain;padding:16px!important;margin:0!important;border:1px solid #3b5875!important;border-radius:15px!important;background:linear-gradient(155deg,#172b41,#0d1929 78%)!important;box-shadow:0 16px 48px #0009!important;color:var(--text);box-sizing:border-box;pointer-events:auto}
-body>.global-popover-panel.is-floating>.global-popover-close{position:sticky;top:0;float:right;z-index:3;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;margin:-7px -7px 8px 12px;border:1px solid #405b76;border-radius:10px;background:#1b3048;color:#eaf3ff;font-size:19px;font-weight:800;cursor:pointer}
+
+
 body>.global-popover-panel.is-floating>.global-popover-close:hover{border-color:#65d6aa;background:#21415a}
 details.global-inline-disclosure{display:block;position:relative;min-width:0;margin:10px 0 0 12px!important;padding-left:12px;border-left:2px solid #3e876f}
 details.global-inline-disclosure>summary{display:flex;align-items:center;gap:9px;min-height:38px;padding:9px 12px!important;border:1px solid #304b65;border-radius:10px;background:#172b40;color:#e8f2fc;font-weight:650;line-height:1.35}
@@ -427,13 +427,13 @@ body>.global-popover-panel.is-floating .match-detail-toggle{min-height:38px;padd
 body>.global-popover-panel.is-floating .match-detail-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
 body>.global-popover-panel.is-floating .match-detail-item{padding:8px 9px;border-radius:8px;background:#192e44;min-width:0}
 @media(max-width:720px){
- body>.global-popover-panel.is-floating{width:calc(100vw - 16px);max-width:calc(100vw - 16px);max-height:80vh;padding:12px!important;border-radius:13px!important}
+ 
  details.global-inline-disclosure{margin-left:5px!important;padding-left:8px}
  .global-inline-panel{max-height:360px;padding:10px}
  body>.global-popover-panel.is-floating .match-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
- body>.global-popover-panel.is-floating>.global-popover-close{min-width:32px;height:32px}
+ 
 }
-@media(max-width:420px){body>.global-popover-panel.is-floating{max-height:84vh;padding:10px!important}details.global-inline-disclosure>summary{padding:8px 9px!important;font-size:11px}body>.global-popover-panel.is-floating .match-detail-grid{grid-template-columns:1fr}}
+@media(max-width:420px){details.global-inline-disclosure>summary{padding:8px 9px!important;font-size:11px}body>.global-popover-panel.is-floating .match-detail-grid{grid-template-columns:1fr}}
 
 
 /* Temporadas: jerarquía visual de estadísticas y conjunto camiseta + escudo */
@@ -1109,18 +1109,8 @@ td b{color:#edf3f7}
 .season-competition-result{background:#121f2e!important}
 .season-competition-result .pill{white-space:nowrap}
 .season-team-panel .season-kpi{background:#142336!important}
-.global-popover-panel.is-floating,body>.global-popover-panel.is-floating{
- border-color:#3b5066!important;
- border-radius:13px!important;
- background:linear-gradient(145deg,#17283a,#101c2a 82%)!important;
- box-shadow:0 16px 42px #0009!important;
-}
-.global-popover-panel.is-floating>.global-popover-close,body>.global-popover-panel.is-floating>.global-popover-close{
- border-color:#40566d!important;
- border-radius:8px!important;
- background:#1a2c40!important;
- color:#e5edf3!important;
-}
+.global-popover-panel.is-floating,
+.global-popover-panel.is-floating>.global-popover-close,
 details.global-inline-disclosure>summary{
  border-color:#2e4359!important;
  border-radius:8px!important;
@@ -1281,16 +1271,9 @@ table{max-width:100%}
 @media(max-width:360px){.stats-grid,.three{grid-template-columns:1fr}.metric-item .metric{font-size:23px}}
 
 /* Corrección específica: evitar el estrechamiento acumulativo de detalles anidados */
-body>.global-popover-panel.is-floating{
- width:min(920px,calc(100vw - 28px))!important;
- min-width:min(560px,calc(100vw - 28px))!important;
- max-width:calc(100vw - 28px)!important;
- box-sizing:border-box!important;
-}
+
 /* No forzar width:100% a cada hijo: rompe flex/grid y estrecha contenido */
-body>.global-popover-panel.is-floating>.global-popover-close{
- width:34px!important;min-width:34px!important;max-width:34px!important;
-}
+
 body>.global-popover-panel.is-floating>:not(.global-popover-close){
  box-sizing:border-box;min-width:0;max-width:100%;
 }
@@ -1388,7 +1371,7 @@ details.global-inline-disclosure>.global-inline-panel,
 }
 #clubs-list>.card>.stats-grid .metric-label{max-width:100%}
 @media(max-width:620px){
- body>.global-popover-panel.is-floating{width:calc(100vw - 16px)!important;min-width:0!important;max-width:calc(100vw - 16px)!important;left:8px!important}
+ 
  body>.global-popover-panel.is-floating .edition-grid,
  body>.global-popover-panel.is-floating .extreme-list{grid-template-columns:minmax(0,1fr)!important}
  .match-detail-grid,.match-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
@@ -1397,6 +1380,56 @@ details.global-inline-disclosure>.global-inline-panel,
 @media(max-width:360px){
  .match-detail-grid,.match-stat-grid{grid-template-columns:minmax(0,1fr)!important}
  #clubs-list>.card>.stats-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+
+/* CONTENEDORES FLOTANTES: una única regla autoritativa */
+body>.global-popover-panel.is-floating{
+ position:fixed!important;z-index:1500!important;display:block!important;
+ left:50%!important;right:auto!important;transform:translateX(-50%)!important;
+ width:min(920px,calc(100vw - 32px))!important;
+ min-width:0!important;max-width:calc(100vw - 32px)!important;
+ max-height:82vh!important;overflow:auto!important;overscroll-behavior:contain;
+ box-sizing:border-box!important;margin:0!important;
+ padding:16px!important;border:1px solid #3b5875!important;border-radius:15px!important;
+ background:linear-gradient(155deg,#172b41,#0d1929 78%)!important;
+ box-shadow:0 16px 48px #0009!important;color:var(--text);pointer-events:auto;
+}
+body>.global-popover-panel.is-floating>.global-popover-close{
+ position:sticky!important;top:0!important;float:right!important;z-index:4!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ width:34px!important;min-width:34px!important;max-width:34px!important;height:34px!important;
+ margin:-7px -7px 8px 12px!important;border:1px solid #405b76!important;
+ border-radius:9px!important;background:#1b3048!important;color:#eaf3ff!important;
+ font-size:19px!important;font-weight:800!important;cursor:pointer!important;
+}
+#season-list .season-row-card{
+ display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;
+ align-items:start!important;min-width:0!important;
+}
+#season-list .season-row-card>.season-main{grid-column:1;grid-row:1;min-width:0!important}
+#season-list .season-row-card>.toolbar{grid-column:2;grid-row:1;align-self:start;min-width:0}
+#season-list .season-row-card>.season-summary-record{
+ grid-column:1/-1;grid-row:2;width:100%!important;min-width:0!important;
+ max-width:100%!important;margin-top:8px!important;box-sizing:border-box!important;
+}
+#season-list .season-summary-record>.record-body{
+ display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;
+}
+#season-list .season-summary-record .season-dual-performance-expanded{
+ display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;max-width:100%;
+}
+#season-list .season-summary-record .season-team-panel{width:100%;min-width:0;max-width:100%}
+#season-list .season-summary-record .season-team-panel-head{display:flex;flex-direction:row;align-items:center;flex-wrap:nowrap;min-width:0;width:100%}
+#season-list .season-summary-record .season-team-heading{flex:1 1 0%;min-width:0}
+#season-list .season-summary-record .season-team-heading strong,
+#season-list .season-summary-record .season-team-heading small{white-space:normal;overflow-wrap:anywhere;word-break:normal}
+#season-list .season-summary-record .season-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;min-width:0}
+@media(max-width:720px){
+ body>.global-popover-panel.is-floating{width:calc(100vw - 20px)!important;max-width:calc(100vw - 20px)!important;max-height:84vh!important;padding:12px!important}
+ #season-list .season-row-card{grid-template-columns:minmax(0,1fr)!important}
+ #season-list .season-row-card>.season-main{grid-column:1;grid-row:1}
+ #season-list .season-row-card>.toolbar{grid-column:1;grid-row:2;justify-content:flex-start}
+ #season-list .season-row-card>.season-summary-record{grid-column:1;grid-row:3}
 }
 </style></head>
 <body><div class="app">
@@ -1551,7 +1584,6 @@ function seasonNationalKitDefaults(s){const team=normalizedTeamKey(seasonNationa
 function seasonNationalKit(s){const base=seasonNationalKitDefaults(s),v=s.visual||{};return{design:['solid','stripes','sash'].includes(v.nationalDesign)?v.nationalDesign:base.design,colorCount:[1,2,3].includes(Number(v.nationalColorCount))?Number(v.nationalColorCount):base.colorCount,primary:validHexColor(v.nationalPrimary,base.primary),secondary:validHexColor(v.nationalSecondary,base.secondary),numberColor:validHexColor(v.nationalNumberColor,base.numberColor)}}
 function seasonJerseySVG(s,compact=false,type='club'){const base=s.visual||{},national=type==='national',n=seasonNationalKit(s),v=national?n:base,primary=validHexColor(v.primary,national?'#24496d':'#e9edf2'),count=[1,2,3].includes(Number(v.colorCount))?Number(v.colorCount):2,secondary=count===1?primary:validHexColor(v.secondary,'#263c58'),numberColor=count===3?validHexColor(v.numberColor,'#263c58'):count===2?secondary:(colorLuminance(primary)>0.48?'#172033':'#ffffff'),design=['solid','stripes','sash'].includes(v.design)?v.design:'solid',number=esc(seasonJerseyNumber(s,type));let pattern='';if(design==='stripes')pattern='<path d="M66 35 L82 35 L116 160 L100 160 Z M105 35 L121 35 L155 160 L139 160 Z M144 35 L160 35 L194 160 L178 160 Z" fill="'+secondary+'" opacity=".92"/>';if(design==='sash')pattern='<path d="M70 42 L91 35 L188 151 L168 160 Z" fill="'+secondary+'"/>';return '<div class="season-shirt-preview"><svg viewBox="0 0 260 220" role="img" aria-label="Camiseta de '+(national?'selección':'club')+', dorsal '+number+'"><path d="M82 26 L48 42 L19 88 L48 111 L66 91 L66 190 Q130 207 194 190 L194 91 L212 111 L241 88 L212 42 L178 26 Q163 48 130 48 Q97 48 82 26Z" fill="'+primary+'" stroke="#dbe5ef" stroke-width="3" stroke-linejoin="round"/><path d="M82 26 Q97 48 130 48 Q163 48 178 26 L165 17 Q130 37 95 17Z" fill="'+secondary+'" stroke="#dbe5ef" stroke-width="2"/>'+pattern+'<path d="M66 91 L48 111 L19 88 M194 91 L212 111 L241 88" fill="none" stroke="'+secondary+'" stroke-width="7"/><text x="130" y="'+(compact?127:137)+'" text-anchor="middle" font-size="'+(compact?48:58)+'" font-weight="900" font-family="Arial,sans-serif" fill="'+numberColor+'" stroke="'+primary+'" stroke-width="1.5" paint-order="stroke">'+number+'</text></svg></div>'}
 function seasonVisualHTML(s){const v=s.visual||{},count=[1,2,3].includes(Number(v.colorCount))?Number(v.colorCount):2,n=seasonNationalKit(s),team=seasonNationalTeamName(s)||'Selección',designOptions=[{value:'solid',label:'Clásica lisa'},{value:'stripes',label:'Franjas verticales'},{value:'sash',label:'Banda diagonal'}],colorOptions=[{value:'1',label:'1 color'},{value:'2',label:'2 colores'},{value:'3',label:'3 colores'}];return '<div class="season-visual-editor"><section class="season-kit-editor-group"><div class="season-kit-editor-preview" id="season-shirt-club-preview">'+seasonJerseySVG(s)+'</div><div class="season-kit-editor-fields"><div class="subsection">Camiseta del club</div><div class="form-grid">'+selectField('Diseño','shirtDesign',designOptions,v.design||'solid')+selectField('Cantidad de colores','shirtColorCount',colorOptions,String(count))+'</div><div class="season-visual-colors">'+field('Color principal','shirtPrimary',validHexColor(v.primary,'#e9edf2'),'color')+'<div class="shirt-color-secondary">'+field('Cuello y diseño','shirtSecondary',validHexColor(v.secondary,'#263c58'),'color')+'</div><div class="shirt-color-number">'+field('Dorsal','shirtNumberColor',validHexColor(v.numberColor,'#263c58'),'color')+'</div></div></div></section><section class="season-kit-editor-group season-national-kit-group"><div class="season-kit-editor-preview" id="season-shirt-national-preview">'+seasonJerseySVG(s,false,'national')+'</div><div class="season-kit-editor-fields"><div class="subsection">Camiseta de la selección · '+esc(team)+'</div><div class="smalltext">El escudo se toma de Datos y copias. El dorsal se toma de «Dorsal en la selección».</div><div class="form-grid">'+selectField('Diseño','nationalShirtDesign',designOptions,n.design)+selectField('Cantidad de colores','nationalShirtColorCount',colorOptions,String(n.colorCount))+'</div><div class="season-visual-colors">'+field('Color principal','nationalShirtPrimary',n.primary,'color')+'<div class="national-shirt-color-secondary">'+field('Cuello y diseño','nationalShirtSecondary',n.secondary,'color')+'</div><div class="national-shirt-color-number">'+field('Dorsal','nationalShirtNumberColor',n.numberColor,'color')+'</div></div></div></section><p class="smalltext season-kit-help">Los dos uniformes se administran por separado. En las temporadas con partidos de selección se muestra también su escudo, cargado desde la biblioteca de equipos.</p></div>'}
-function seasonVisualHTML(s){const crest=s.visual?.crest||'',count=[1,2,3].includes(Number(s.visual?.colorCount))?Number(s.visual.colorCount):2;return '<div class="season-visual-editor"><div class="season-visual-controls"><div class="season-crest-upload"><div class="season-crest-preview" id="season-crest-preview">'+(crest?'<img src="'+esc(crest)+'" alt="Escudo de la temporada">':'Sin escudo')+'</div><div><b>Escudo de la temporada</b><div class="smalltext">PNG transparente · máximo 1 MB</div><label class="btn small" for="season-crest-file">Cargar PNG</label> <button type="button" class="btn small ghost" onclick="clearSeasonCrest()">Quitar</button><input id="season-crest-file" type="file" accept="image/png,.png" hidden onchange="readSeasonCrest(this)"><input type="hidden" name="crestData" value="'+esc(crest)+'"></div></div><div class="subsection">Diseño de camiseta</div><div class="form-grid">'+selectField('Diseño','shirtDesign',[{value:'solid',label:'Clásica lisa'},{value:'stripes',label:'Franjas verticales'},{value:'sash',label:'Banda diagonal'}],s.visual?.design||'solid')+selectField('Cantidad de colores','shirtColorCount',[{value:'1',label:'1 color'},{value:'2',label:'2 colores'},{value:'3',label:'3 colores'}],String(count))+'</div><div class="season-visual-colors">'+field('Color 1 · Base','shirtPrimary',validHexColor(s.visual?.primary,'#e9edf2'),'color')+'<div class="shirt-color-secondary">'+field('Color 2 · Cuello y diseño','shirtSecondary',validHexColor(s.visual?.secondary,'#263c58'),'color')+'</div><div class="shirt-color-number">'+field('Color 3 · Dorsal','shirtNumberColor',validHexColor(s.visual?.numberColor,'#263c58'),'color')+'</div></div><div class="smalltext">Con 1 color, el dorsal usa automáticamente un tono de contraste. Con 2 colores, el segundo se aplica al cuello, diseño y dorsal. Con 3 colores, el tercero se reserva para el dorsal.</div><div class="smalltext">El dorsal se toma automáticamente del campo «Dorsal en el club» de los datos iniciales de esta temporada. Si está vacío, utiliza el dorsal del cierre.</div></div>'+seasonJerseySVG(s)+'</div>'}
 function legacyIndividualAwards(r){const a=[];if(r.bestPlayer)a.push({type:'Mejor jugador',competition:r.bestPlayerCompetition||''});if(r.topScorer)a.push({type:'Máximo goleador',competition:r.topScorerCompetition||''});if(r.topAssists)a.push({type:'Máximo asistente',competition:r.topAssistsCompetition||''});return a}
 function renderIndividualAwardsEditor(results={}){
  const host=document.getElementById('individual-awards-editor');if(!host)return;
@@ -1634,7 +1666,7 @@ function seasonKpiHTML(label,value,key,primary=false){
  const status={quiet:'Sin registros todavía',starter:'Primeros registros',mid:'Buen rendimiento',high:'Rendimiento alto',elite:'Marca destacada'}[level];
  return '<div class="season-kpi season-kpi-'+key+' season-kpi-'+level+(primary?' season-kpi-primary':'')+'" data-level="'+level+'"><div class="season-kpi-caption"><span class="season-kpi-icon" aria-hidden="true">'+icons[key]+'</span><span>'+esc(label)+'</span></div><b>'+fmt(value)+'</b>'+(primary?'<small>'+status+'</small>':'')+'</div>';
 }
-function renderSeasons(){const host=document.getElementById('season-list'),comps=competitionParticipation();document.getElementById('competition-records').innerHTML=Object.entries(comps).length?'<table><thead><tr><th>Competición</th><th>Veces disputada</th><th>Veces ganada</th><th>Conversión</th></tr></thead><tbody>'+Object.entries(comps).sort((a,b)=>b[1].played-a[1].played).map(([name,x])=>'<tr><td>'+competitionLabel(name)+'</td><td>'+x.played+'</td><td>'+x.wins+'</td><td>'+fmt(x.wins/x.played*100,1)+'%</td></tr>').join('')+'</tbody></table>':emptyState('Se calculará cuando haya partidos o resultados de competiciones.');host.innerHTML=db.seasons.length?db.seasons.map(s=>{const ms=seasonMatches(s.id),clubMs=ms.filter(m=>!isNationalTeamMatch(m)),nationalMs=ms.filter(isNationalTeamMatch),identity=seasonIdentity(s),panels=[];if(clubMs.length||!nationalMs.length)panels.push(seasonTeamPanelHTML(s,clubMs,'club',false));if(nationalMs.length)panels.push(seasonTeamPanelHTML(s,nationalMs,'national',false));return '<div class="season-row season-row-card"><div class="season-main"><div class="season-title-line"><b>'+esc(seasonName(s))+'</b><span class="pill '+(s.status==='finished'?'ok':'warn')+'">'+(s.status==='finished'?'Finalizada':'Activa')+'</span>'+(nationalMs.length?'<span class="pill season-national-badge">Temporada con selección</span>':'')+'</div><div class="season-dates">'+date(s.startDate)+' → '+(s.endDate?date(s.endDate):'En curso')+'</div><div class="season-identity-bar">'+(identity.age!==undefined?'<span class="season-age-chip">'+esc(identity.age)+' años</span>':'')+(identity.rating!==undefined?'<div class="season-rating-feature"><span class="season-rating-caption">VALORACIÓN GENERAL</span><b>'+esc(identity.rating)+'</b><small>al inicio</small></div>':'')+'</div>'+seasonTrophyStripHTML(s)+'<div class="season-dual-performance">'+panels.join('')+'</div></div><div class="toolbar"><details class="record"><summary>Ver resumen completo</summary>'+seasonOverviewHTML(s)+'</details><button class="btn small" onclick="showSeasonForm(\''+s.id+'\')">Editar</button><button class="btn small danger" onclick="deleteSeason(\''+s.id+'\')">Eliminar</button></div></div>'}).join(''):emptyState('No hay temporadas. Creá una para guardar los valores iniciales del jugador.')}
+function renderSeasons(){const host=document.getElementById('season-list'),comps=competitionParticipation();document.getElementById('competition-records').innerHTML=Object.entries(comps).length?'<table><thead><tr><th>Competición</th><th>Veces disputada</th><th>Veces ganada</th><th>Conversión</th></tr></thead><tbody>'+Object.entries(comps).sort((a,b)=>b[1].played-a[1].played).map(([name,x])=>'<tr><td>'+competitionLabel(name)+'</td><td>'+x.played+'</td><td>'+x.wins+'</td><td>'+fmt(x.wins/x.played*100,1)+'%</td></tr>').join('')+'</tbody></table>':emptyState('Se calculará cuando haya partidos o resultados de competiciones.');host.innerHTML=db.seasons.length?db.seasons.map(s=>{const ms=seasonMatches(s.id),clubMs=ms.filter(m=>!isNationalTeamMatch(m)),nationalMs=ms.filter(isNationalTeamMatch),identity=seasonIdentity(s),panels=[];if(clubMs.length||!nationalMs.length)panels.push(seasonTeamPanelHTML(s,clubMs,'club',false));if(nationalMs.length)panels.push(seasonTeamPanelHTML(s,nationalMs,'national',false));return '<div class="season-row season-row-card"><div class="season-main"><div class="season-title-line"><b>'+esc(seasonName(s))+'</b><span class="pill '+(s.status==='finished'?'ok':'warn')+'">'+(s.status==='finished'?'Finalizada':'Activa')+'</span>'+(nationalMs.length?'<span class="pill season-national-badge">Temporada con selección</span>':'')+'</div><div class="season-dates">'+date(s.startDate)+' → '+(s.endDate?date(s.endDate):'En curso')+'</div><div class="season-identity-bar">'+(identity.age!==undefined?'<span class="season-age-chip">'+esc(identity.age)+' años</span>':'')+(identity.rating!==undefined?'<div class="season-rating-feature"><span class="season-rating-caption">VALORACIÓN GENERAL</span><b>'+esc(identity.rating)+'</b><small>al inicio</small></div>':'')+'</div>'+seasonTrophyStripHTML(s)+'<div class="season-dual-performance">'+panels.join('')+'</div></div><div class="toolbar"><button class="btn small" onclick="showSeasonForm(\''+s.id+'\')">Editar</button><button class="btn small danger" onclick="deleteSeason(\''+s.id+'\')">Eliminar</button></div><details class="record season-summary-record"><summary>Ver resumen completo</summary>'+seasonOverviewHTML(s)+'</details></div>'}).join(''):emptyState('No hay temporadas. Creá una para guardar los valores iniciales del jugador.')}
 function deleteSeason(id){const s=seasonById(id),n=db.matches.filter(m=>m.seasonId===id).length;if(!confirm(`Vas a eliminar ${seasonName(s)} y ${n} partido(s) asociado(s). Esta acción no se puede deshacer. ¿Continuar?`))return;db.seasons=db.seasons.filter(x=>x.id!==id);db.matches=db.matches.filter(x=>x.seasonId!==id);save();renderAll()}
 function showMatchForm(id=null){editingMatch=id;const last=[...db.matches].sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0]||null;const m=id?db.matches.find(x=>x.id===id):null;const seed=m||last||{};const sopts=db.seasons.map(s=>({value:s.id,label:seasonName(s)}));document.getElementById('match-form-host').innerHTML=`<div class="card" style="margin-bottom:14px"><div class="card-head"><div><h2>${m?'Editar partido':'Registrar partido'}</h2><p class="smalltext">${!m&&last?'Se precargaron los datos del último partido; modificá lo que cambie.':''}</p></div><button class="btn small ghost" onclick="closeMatchForm()">Cerrar ×</button></div>${!db.seasons.length?'<div class="notice">Primero necesitás crear una temporada.</div>':''}<form id="match-form"><div class="form-grid">${selectField('Temporada *','seasonId',sopts,seed.seasonId??db.seasons.at(-1)?.id??'')}${field('Fecha *','date',m?.date??'','date','required')}${field('Competencia *','competition',seed.competition??'','text','required')}${field('Instancia','stage',seed.stage??'')}${field('Rival *','opponent',seed.opponent??'','text','required')}${field('Club / equipo propio','club',seed.club??'')}${selectField('Equipo con el que jugaste','teamType',[{value:'club',label:'Club'},{value:'national',label:'Selección'}],seed.teamType??(isNationalTeamMatch(seed)?'national':'club'))}${field('Resultado (marcador)','score',m?.score??'','text','placeholder="Ej. 1-1"')}<div class="field-hint">Ingresá primero el marcador del partido (local-visitante). Si termina empatado, podés indicar la definición por penales.</div>${selectField('Condición','venue',[{value:'home',label:'Local'},{value:'away',label:'Visitante'},{value:'neutral',label:'Neutral'}],seed.venue??'')}${selectField('¿Se jugó?','played',[{value:'yes',label:'Sí, se jugó'},{value:'no',label:'No se jugó'}],m?(m.played?'yes':'no'):'yes')}${selectField('Definición por penales','shootout',[{value:'',label:'Sin penales / no aplica'},{value:'W',label:'Ganó por penales'},{value:'L',label:'Perdió por penales'}],m?.shootout??'')}${selectField('Resultado deportivo','result',[{value:'W',label:'Victoria'},{value:'D',label:'Empate'},{value:'L',label:'Derrota'}],m?.result??seed.result??'D')}${selectField('¿Fuiste la figura del encuentro?','isStar',[{value:'no',label:'No'},{value:'yes',label:'Sí'}],(m?.isStar||m?.figure)?'yes':'no')}</div><div id="match-stats-area"><div class="subsection">Estadísticas individuales · solo si se jugó y no es Amistoso</div><div class="form-grid">${MATCH_FIELDS.map(([k,l])=>field(l,k,m?.stats?.[k]??seed.stats?.[k]??0,'number',k==='rating'?'min="0" max="10" step="0.1"':'min="0" step="any"')).join('')}</div><p class="smalltext">Las cifras secundarias están incluidas en su total: goles de penal y de tiro libre dentro de goles; tiros al arco dentro de tiros; pases completados dentro de pases; y fueras de juego dentro de faltas. No se suman nuevamente.</p></div><div class="form-actions"><button type="button" class="btn" onclick="closeMatchForm()">Cancelar</button><button class="btn primary" ${db.seasons.length?'':'disabled'}>Guardar partido</button></div></form></div>`;const form=document.getElementById('match-form');const playedSel=form.elements.played;function toggleStats(){const friendly=isFriendly({competition:form.elements.competition.value});document.getElementById('match-stats-area').classList.toggle('hidden',playedSel.value!=='yes'||friendly)}playedSel.addEventListener('change',toggleStats);form.elements.competition.addEventListener('input',toggleStats);form.elements.competition.addEventListener('input',()=>{if(!m&&form.elements.teamType){const guess={competition:form.elements.competition.value,club:form.elements.club.value};form.elements.teamType.value=isNationalTeamMatch(guess)?'national':'club'}});form.elements.club.addEventListener('input',()=>{if(!m&&form.elements.teamType){const guess={competition:form.elements.competition.value,club:form.elements.club.value};form.elements.teamType.value=isNationalTeamMatch(guess)?'national':'club'}});form.elements.shootout.addEventListener('change',()=>{if(form.elements.shootout.value)form.elements.result.value=form.elements.shootout.value});toggleStats();form.addEventListener('submit',saveMatch);document.getElementById('match-form-host').scrollIntoView({behavior:'smooth',block:'start'})}
 function closeMatchForm(){editingMatch=null;document.getElementById('match-form-host').innerHTML=''}function quickAddMatch(){if(!db.seasons.length){alert('Primero creá una temporada.');go('seasons');return}go('matches');showMatchForm()}
@@ -1885,8 +1917,9 @@ function installGlobalDisclosureSystem(){
   panel.style.boxSizing='border-box';
   // La ventana es un panel de lectura: siempre centrado en el viewport,
   // nunca alineado al borde derecho de una tarjeta o activador.
-  panel.style.left=Math.max(margin,(viewportWidth-width)/2)+'px';
-  panel.style.right='auto';
+  panel.style.setProperty('left','50%','important');
+  panel.style.setProperty('right','auto','important');
+  panel.style.setProperty('transform','translateX(-50%)','important');
   panel.style.top=margin+'px';
   const height=panel.getBoundingClientRect().height;
   const below=window.innerHeight-rect.bottom-gap-margin,above=rect.top-gap-margin;
@@ -1900,7 +1933,11 @@ function installGlobalDisclosureSystem(){
  document.addEventListener('click',e=>{
   const close=e.target.closest('.global-popover-close');if(close){e.preventDefault();e.stopPropagation();const owner=close.closest('.global-popover-panel')?.__globalOwner;if(owner)closeDetails(owner);return}
   const summary=e.target.closest('details > summary');
-  if(summary){const d=summary.parentElement;if(!isDisclosure(d))return;e.preventDefault();const insideBubble=!!d.parentElement?.closest('.global-popover-panel,.global-inline-panel');
+  if(summary){const d=summary.parentElement;if(!isDisclosure(d))return;e.preventDefault();
+   // El resumen de temporada se despliega dentro de su propia tarjeta:
+   // no debe convertirse en una ventana flotante separada.
+   if(d.matches('#season-list .season-summary-record')){d.open=!d.open;getSummary(d)?.setAttribute('aria-expanded',d.open?'true':'false');return}
+   const insideBubble=!!d.parentElement?.closest('.global-popover-panel,.global-inline-panel');
    if(insideBubble){d.classList.add('global-inline-disclosure');if(d.open){closeNested(d);d.open=false;getSummary(d)?.setAttribute('aria-expanded','false')}else openNested(d);return}
    if(d.open){closeDetails(d);return}openPrimary(d);return
   }
