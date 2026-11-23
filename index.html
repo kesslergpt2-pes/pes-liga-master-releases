@@ -1287,7 +1287,23 @@ body>.global-popover-panel.is-floating{
  max-width:calc(100vw - 28px)!important;
  box-sizing:border-box!important;
 }
-body>.global-popover-panel.is-floating>*{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+/* No forzar width:100% a cada hijo: rompe flex/grid y estrecha contenido */
+body>.global-popover-panel.is-floating>.global-popover-close{
+ width:34px!important;min-width:34px!important;max-width:34px!important;
+}
+body>.global-popover-panel.is-floating>:not(.global-popover-close){
+ box-sizing:border-box;min-width:0;max-width:100%;
+}
+body>.global-popover-panel.is-floating .card-head,
+body>.global-popover-panel.is-floating .club-identity,
+body>.global-popover-panel.is-floating .club-summary,
+body>.global-popover-panel.is-floating .club-title{
+ min-width:0;max-width:100%;
+}
+body>.global-popover-panel.is-floating .club-title,
+body>.global-popover-panel.is-floating .club-summary-name{
+ overflow-wrap:normal;word-break:normal;white-space:normal;
+}
 body>.global-popover-panel.is-floating .edition-grid,
 body>.global-popover-panel.is-floating .extreme-list{
  display:grid!important;
