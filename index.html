@@ -1921,8 +1921,14 @@ function renderCareerRecords(){
   add('Más tiros en un partido',num(maxShots.stats?.shots),'Encuentro · '+date(maxShots.date),maxShots);
   const bestImpact=ms.reduce((best,m)=>!best||matchImpactScore(m)>matchImpactScore(best)?m:best,null);
   add('Mayor impacto estadístico',matchImpactScore(bestImpact),'Índice integral · '+date(bestImpact.date),bestImpact);
-  const byGoals=ms.filter(m=>num(m.stats?.goals)>=3).length;
-  add('Hat-tricks',byGoals,'Partidos con tres goles o más');
+  const byGoals=ms.filter(m=>num(m.stats?.goals)===3).length;
+  add('Hat-tricks',byGoals,'Partidos con exactamente tres goles');
+  const maxFreeKick=ms.reduce((best,m)=>num(m.stats?.freeKickGoals)>num(best.stats?.freeKickGoals)?m:best,ms[0]);
+  const maxPenalty=ms.reduce((best,m)=>num(m.stats?.penaltyGoals)>num(best.stats?.penaltyGoals)?m:best,ms[0]);
+  add('Más goles de tiro libre en un partido',num(maxFreeKick.stats?.freeKickGoals),'Encuentro · '+date(maxFreeKick.date),maxFreeKick);
+  add('Más goles de penal en un partido',num(maxPenalty.stats?.penaltyGoals),'Encuentro · '+date(maxPenalty.date),maxPenalty);
+  const maxFigure=ms.reduce((best,m)=>isMatchFigure(m)&&(!best||num(m.stats?.rating)>num(best.stats?.rating))?m:best,null);
+  if(maxFigure)add('Figura con mayor valoración',num(maxFigure.stats?.rating),'Encuentro · '+date(maxFigure.date),maxFigure);
  }
  let streak=0,bestWin=0,currentGoal=0,bestGoal=0,unbeaten=0,bestUnbeaten=0;
  ms.forEach(m=>{if(m.result==='W'){streak++;unbeaten++}else{bestWin=Math.max(bestWin,streak);streak=0;if(m.result==='L'){bestUnbeaten=Math.max(bestUnbeaten,unbeaten);unbeaten=0}}if(num(m.stats?.goals)>0){currentGoal++;bestGoal=Math.max(bestGoal,currentGoal)}else currentGoal=0});
@@ -1940,9 +1946,12 @@ function renderIntegrity(){
  const issues=[],warnings=[],ms=db.matches||[],seasons=db.seasons||[],seen=new Map();
  ms.forEach(m=>{const key=[m.seasonId,m.date,m.competition,m.club,m.opponent,m.score].map(x=>String(x??'').trim().toLowerCase()).join('|');if(seen.has(key))warnings.push('Posible partido duplicado: '+[date(m.date),m.competition,m.club+' vs. '+m.opponent].filter(Boolean).join(' · '));else seen.set(key,m);
   if(!seasons.some(s=>String(s.id)===String(m.seasonId)))issues.push('Partido sin temporada existente: '+date(m.date)+' · '+(m.opponent||'rival sin nombre'));
-  if(m.played&&!isFriendly(m)){const x=m.stats||{};if(num(x.shotsOnTarget)>num(x.shots))issues.push('Tiros al arco superiores a tiros: '+date(m.date)+' · '+(m.opponent||''));if(num(x.passesCompleted)>num(x.passes))issues.push('Pases completados superiores a pases: '+date(m.date)+' · '+(m.opponent||''));if(num(x.offsides)>num(x.fouls))issues.push('Fueras de juego superiores a faltas: '+date(m.date)+' · '+(m.opponent||''));if(m.shootout&&m.result!=='D')issues.push('Definición por penales en un partido que no terminó empatado: '+date(m.date)+' · '+(m.opponent||''));}
+  if(m.played&&!isFriendly(m)){const x=m.stats||{};if(num(x.shotsOnTarget)>num(x.shots))issues.push('Tiros al arco superiores a tiros: '+date(m.date)+' · '+(m.opponent||''));if(num(x.passesCompleted)>num(x.passes))issues.push('Pases completados superiores a pases: '+date(m.date)+' · '+(m.opponent||''));if(num(x.offsides)>num(x.fouls))issues.push('Fueras de juego superiores a faltas: '+date(m.date)+' · '+(m.opponent||''));if(m.shootout){const parts=String(m.score||'').split(/[-:–—]/).map(v=>v.trim());const tied=parts.length===2&&parts.every(v=>v!==''&&Number.isSafeInteger(Number(v)))&&Number(parts[0])===Number(parts[1]);if(!tied||!['W','L'].includes(m.result))issues.push('Definición por penales con marcador o resultado incompatible: '+date(m.date)+' · '+(m.opponent||''));}}
  });
  const ids=new Set();seasons.forEach(s=>{if(ids.has(String(s.id)))issues.push('Identificador de temporada repetido: '+seasonName(s));ids.add(String(s.id));});
+ const compNames=new Map();ms.forEach(m=>{const raw=String(m.competition||'').trim(),key=normalizedTeamKey(raw);if(!key)return;if(compNames.has(key)&&compNames.get(key)!==raw)warnings.push('Competición con variantes de escritura: '+compNames.get(key)+' / '+raw);else compNames.set(key,raw)});
+ seasons.forEach(s=>{if(s.startDate&&s.endDate&&s.endDate<s.startDate)issues.push('La fecha de cierre es anterior al inicio: '+seasonName(s));});
+
  const friendlyLeak=ms.filter(m=>isFriendly(m)&&m.played&&m.stats&&Object.values(m.stats).some(v=>num(v)!==0)).length;
  const status=issues.length?'error':warnings.length?'warning':'ok';
  const block=(title,list,empty)=>'<div class="integrity-group"><h3>'+title+' <span class="pill">'+list.length+'</span></h3>'+(list.length?'<ul>'+list.slice(0,40).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'<p class="smalltext">'+empty+'</p>')+'</div>';
