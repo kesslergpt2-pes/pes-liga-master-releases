@@ -1294,16 +1294,37 @@ body>.global-popover-panel.is-floating>.global-popover-close{
 body>.global-popover-panel.is-floating>:not(.global-popover-close){
  box-sizing:border-box;min-width:0;max-width:100%;
 }
-body>.global-popover-panel.is-floating .card-head,
-body>.global-popover-panel.is-floating .club-identity,
-body>.global-popover-panel.is-floating .club-summary,
-body>.global-popover-panel.is-floating .club-title{
- min-width:0;max-width:100%;
+/* El contenido real de Temporadas usa season-team-panel, no club-summary/club-title */
+body>.global-popover-panel.is-floating .season-dual-performance-expanded{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ width:100%!important;min-width:0!important;max-width:none!important;
+ align-items:stretch!important;box-sizing:border-box!important;
 }
-body>.global-popover-panel.is-floating .club-title,
-body>.global-popover-panel.is-floating .club-summary-name{
- overflow-wrap:normal;word-break:normal;white-space:normal;
+body>.global-popover-panel.is-floating .season-team-panel{
+ display:block!important;width:100%!important;min-width:0!important;
+ max-width:none!important;box-sizing:border-box!important;
 }
+body>.global-popover-panel.is-floating .season-team-panel-head{
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ align-items:center!important;width:100%!important;min-width:0!important;
+}
+body>.global-popover-panel.is-floating .season-team-emblems{flex:0 0 auto!important}
+body>.global-popover-panel.is-floating .season-team-heading{
+ display:grid!important;flex:1 1 0%!important;width:auto!important;
+ min-width:0!important;max-width:none!important;
+}
+body>.global-popover-panel.is-floating .season-team-heading strong,
+body>.global-popover-panel.is-floating .season-team-heading small{
+ white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;
+}
+body>.global-popover-panel.is-floating .season-team-panel .season-kpi-grid{
+ display:grid!important;width:100%!important;min-width:0!important;max-width:none!important;
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+body>.global-popover-panel.is-floating .season-team-panel .season-kpi{
+ min-width:0!important;width:auto!important;max-width:100%!important;
+}
+
 body>.global-popover-panel.is-floating .edition-grid,
 body>.global-popover-panel.is-floating .extreme-list{
  display:grid!important;
